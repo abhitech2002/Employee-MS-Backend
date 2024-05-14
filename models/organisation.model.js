@@ -9,6 +9,10 @@ const OrganisationSchema = new Schema({
     address: {
         type: String,
         required: true
+    },
+    industry:{
+        type: String,
+        required: true
     }
 });
 
