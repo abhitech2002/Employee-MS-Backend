@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const OragRoutes = require('./routes/organization.routes')
+const EmployeeRoute = require("./routes/employee.routes")
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ mongoose
 
 
 app.use('/api/register', OragRoutes)
+app.use('/api/users/register', EmployeeRoute)
 
 const PORT = process.env.PORT || 3000
 
