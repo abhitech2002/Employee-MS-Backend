@@ -1,15 +1,72 @@
 const Employee = require('../models/employee.model');
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: './uploads/',
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 1000000 }, // Limit file size to 1MB
+    fileFilter: (req, file, cb) => {
+        checkFileType(file, cb);
+    }
+}).single('documentUpload');
+
+// Check file type
+function checkFileType(file, cb) {
+    const filetypes = /pdf|doc|docx/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+
+    if (mimetype && extname) {
+        return cb(null, true);
+    } else {
+        cb('Error: Documents Only!');
+    }
+}
+
+exports.createEmployee = (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            res.status(400).json({ message: err });
+        } else {
+            if (req.file == undefined) {
+                res.status(400).json({ message: 'No file selected!' });
+            } else {
+                const newEmployee = new Employee({
+                    name: req.body.name,
+                    email: req.body.email,
+                    organisation: req.body.organisation,
+                    department: req.body.department,
+                    designation: req.body.designation,
+                    reportingManager: req.body.reportingManager,
+                    personalDetails: req.body.personalDetails,
+                    documentUpload: req.file.filename
+                });
+
+                newEmployee.save()
+                    .then(employee => res.json(employee))
+                    .catch(err => res.status(400).json({ message: err.message }));
+            }
+        }
+    });
+};
 
 // Post 
-exports.createEmployee = async (req, res) => {
-    try {
-        const employee = new Employee(req.body);
-        await employee.save();
-        res.status(201).json(employee);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-};
+// exports.createEmployee = async (req, res) => {
+//     try {
+//         const employee = new Employee(req.body);
+//         await employee.save();
+//         res.status(201).json(employee);
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// };
 
 // Get
 exports.getAllEmployees = async (req, res) => {
