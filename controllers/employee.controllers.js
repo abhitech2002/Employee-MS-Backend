@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 1000000 }, // Limit file size to 1MB
+    limits: { fileSize: 2000000 }, 
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb);
     }
@@ -38,15 +38,22 @@ exports.createEmployee = (req, res) => {
             if (req.file == undefined) {
                 res.status(400).json({ message: 'No file selected!' });
             } else {
+                const { name, email, code, designation, department, workLocation, workExperience, educationDetails, reportingManager } = req.body;
+                const documentUpload = req.file.path;
+                const organisation = req.body.organisation;
+
                 const newEmployee = new Employee({
-                    name: req.body.name,
-                    email: req.body.email,
-                    organisation: req.body.organisation,
-                    department: req.body.department,
-                    designation: req.body.designation,
-                    reportingManager: req.body.reportingManager,
-                    personalDetails: req.body.personalDetails,
-                    documentUpload: req.file.filename
+                    name,
+                    email,
+                    code,
+                    designation,
+                    department,
+                    workLocation,
+                    workExperience,
+                    educationDetails,
+                    reportingManager,
+                    documentUpload,
+                    organisation
                 });
 
                 newEmployee.save()

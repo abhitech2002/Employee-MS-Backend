@@ -11,6 +11,10 @@ const EmployeeSchema = new Schema({
         required: true,
         unique: true
     },
+    code: {
+        type: String,
+        required: true
+    },
     organisation: {
         type: Schema.Types.ObjectId,
         ref: 'organisation',
@@ -24,11 +28,19 @@ const EmployeeSchema = new Schema({
         type: String,
         required: true
     },
+    workExperience: {
+        type: Number,
+        required: true
+    },
+    educationDetails: {
+        type: String,
+        required: true
+    },
     reportingManager: {
         type: String,
         required: true
     },
-    personalDetails: {
+    educationDetails: {
         type: String,
         required: true
     },
