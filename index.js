@@ -5,8 +5,8 @@ const OragRoutes = require('./routes/organization.routes')
 const EmployeeRoute = require("./routes/employee.routes")
 const DepartmentRoute = require("./routes/department.routes")
 const DesignationRoute = require("./routes/designation.routes")
+const ExportFileRoutes = require('./routes/ExportFile.routes');
 const cors = require('cors')
-
 
 dotenv.config()
 
@@ -28,6 +28,7 @@ app.use('/api/organization/register', OragRoutes)
 app.use('/api/employee/register', EmployeeRoute)
 app.use('/api/department/register', DepartmentRoute)
 app.use('/api/designation/register', DesignationRoute)
+app.use('/api/export', ExportFileRoutes);
 
 const PORT = process.env.PORT || 3000
 
