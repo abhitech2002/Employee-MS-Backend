@@ -39,7 +39,6 @@ exports.createEmployee = (req, res) => {
             } else {
                 const { name, email, code, designation, department, workLocation, workExperience, educationDetails, reportingManager } = req.body;
                 const documentUpload = req.file.path;
-                const organisation = req.body.organisation;
 
                 const newEmployee = new Employee({
                     name,
@@ -52,7 +51,6 @@ exports.createEmployee = (req, res) => {
                     educationDetails,
                     reportingManager,
                     documentUpload,
-                    organisation
                 });
 
                 newEmployee.save()
@@ -67,7 +65,7 @@ exports.createEmployee = (req, res) => {
 // Get
 exports.getAllEmployees = async (req, res) => {
     try {
-        const employees = await Employee.find().populate('organisation');
+        const employees = await Employee.find()
         res.json(employees);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -77,7 +75,7 @@ exports.getAllEmployees = async (req, res) => {
 // Get
 exports.getEmployeeById = async (req, res) => {
     try {
-        const employee = await Employee.findById(req.params.id).populate('organisation');
+        const employee = await Employee.findById(req.params.id)
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }

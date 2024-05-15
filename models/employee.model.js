@@ -15,11 +15,6 @@ const EmployeeSchema = new Schema({
         type: String,
         required: true
     },
-    organisation: {
-        type: Schema.Types.ObjectId,
-        ref: 'organisation',
-        required: true
-    },
     department: {
         type: String,
         required: true
