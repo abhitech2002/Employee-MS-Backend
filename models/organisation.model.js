@@ -6,11 +6,15 @@ const OrganisationSchema = new Schema({
         type: String,
         required: true
     },
-    address: {
+    email:{
+        type: String,
+        required:true
+    },
+    phone:{
         type: String,
         required: true
-    },
-    industry:{
+    }, 
+    password: {
         type: String,
         required: true
     }

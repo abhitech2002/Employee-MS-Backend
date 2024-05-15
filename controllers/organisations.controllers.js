@@ -1,14 +1,41 @@
 const Organization = require("../models/organisation.model");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 // Post
 exports.createOrganization = async (req, res) => {
   try {
-    const organization = new Organization(req.body);
-    await organization.save();
-    res.status(201).json(organization);
+      const { name, email, phone, password } = req.body;
+      
+      // Check if the organization already exists
+      let organisation = await Organisation.findOne({ email });
+      if (organisation) {
+          return res.status(400).json({ message: 'Organisation already exists' });
+      }
+
+      // Hash the password before saving the organisation
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      // Create a new organization with the hashed password
+      organisation = new Organisation({ name, email, phone, password: hashedPassword });
+      await organisation.save();
+
+      // Generate a JWT token
+      const payload = {
+          organisation: {
+              id: organisation.id
+          }
+      };
+      const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+      res.status(201).json({ token, message:"Organization Registration Done Successfully..." });
   } catch (error) {
-    res.status(400).json({ message: error.message });
-    console.log("Oragnization Register Error");
+      res.status(400).json({ message: error.message });
+      console.log("Organization Register Error:", error);
   }
 };
 

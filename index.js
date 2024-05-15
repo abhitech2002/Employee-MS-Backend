@@ -3,11 +3,14 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const OragRoutes = require('./routes/organization.routes')
 const EmployeeRoute = require("./routes/employee.routes")
+const cors = require('cors')
+
 
 dotenv.config()
 
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 
 const MONGODB_URI = process.env.MONGODB_URI
@@ -19,8 +22,8 @@ mongoose
     .catch((error) => console.log(error))
 
 
-app.use('/api/register', OragRoutes)
-app.use('/api/users/register', EmployeeRoute)
+app.use('/api/organization/register', OragRoutes)
+app.use('/api/employee/register', EmployeeRoute)
 
 const PORT = process.env.PORT || 3000
 
