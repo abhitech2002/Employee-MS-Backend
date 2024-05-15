@@ -28,6 +28,10 @@ const EmployeeSchema = new Schema({
         type: String,
         required: true
     },
+    workLocation: {
+        type: String,
+        required: true
+    },
     workExperience: {
         type: Number,
         required: true
