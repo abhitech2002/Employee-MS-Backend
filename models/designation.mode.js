@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Define Designation Schema
 const designationSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -17,7 +16,6 @@ const designationSchema = new mongoose.Schema({
   }
 });
 
-// Create Designation model
 const Designation = mongoose.model('Designation', designationSchema);
 
 module.exports = Designation;

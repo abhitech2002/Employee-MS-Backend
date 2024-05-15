@@ -10,21 +10,17 @@ exports.createOrganization = async (req, res) => {
   try {
       const { name, email, phone, password } = req.body;
       
-      // Check if the organization already exists
       let organisation = await Organisation.findOne({ email });
       if (organisation) {
           return res.status(400).json({ message: 'Organisation already exists' });
       }
 
-      // Hash the password before saving the organisation
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      // Create a new organization with the hashed password
       organisation = new Organisation({ name, email, phone, password: hashedPassword });
       await organisation.save();
 
-      // Generate a JWT token
       const payload = {
           organisation: {
               id: organisation.id

@@ -17,7 +17,6 @@ const upload = multer({
     }
 }).single('documentUpload');
 
-// Check file type
 function checkFileType(file, cb) {
     const filetypes = /pdf|doc|docx/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -64,16 +63,6 @@ exports.createEmployee = (req, res) => {
     });
 };
 
-// Post 
-// exports.createEmployee = async (req, res) => {
-//     try {
-//         const employee = new Employee(req.body);
-//         await employee.save();
-//         res.status(201).json(employee);
-//     } catch (error) {
-//         res.status(400).json({ message: error.message });
-//     }
-// };
 
 // Get
 exports.getAllEmployees = async (req, res) => {
